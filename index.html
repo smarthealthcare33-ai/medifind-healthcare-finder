@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MediFind — Healthcare Finder</title>
+<style>
+  :root { --bg:#f3f8f7; --ink:#12302d; --brand:#0f8b7d; --card:#fff; --line:#d5e5e2; --sos:#c8372d; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0d1f1d; --ink:#e4f2ef; --brand:#3dc4b2; --card:#142a27; --line:#24413d; }
+  }
+  * { box-sizing:border-box; margin:0; }
+  body { font-family:system-ui,sans-serif; background:var(--bg); color:var(--ink); max-width:480px; margin:auto; padding:16px; }
+  header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+  h1 { font-size:1.4rem; color:var(--brand); }
+  .tag { font-size:1.6rem; font-weight:700; line-height:1.2; margin-bottom:16px; }
+  .search { width:100%; padding:14px; border:1px solid var(--line); border-radius:12px; background:var(--card); color:var(--ink); font-size:1rem; margin-bottom:16px; }
+  .grid { display:grid; gap:12px; }
+  .card { display:flex; gap:14px; align-items:center; padding:16px; background:var(--card); border:1px solid var(--line); border-radius:14px; cursor:pointer; }
+  .card:focus-visible, button:focus-visible { outline:3px solid var(--brand); }
+  .card span { font-size:1.8rem; }
+  .card b { display:block; }
+  .card small { opacity:.7; }
+  .sos { background:var(--sos); color:#fff; border:0; width:100%; padding:16px; border-radius:14px; font-size:1.05rem; font-weight:700; margin-top:16px; }
+  #lang { padding:6px; border-radius:8px; border:1px solid var(--line); background:var(--card); color:var(--ink); }
+  #out { margin-top:16px; padding:14px; border-radius:12px; background:var(--card); border:1px solid var(--line); min-height:48px; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>♥ MediFind</h1>
+    <select id="lang" aria-label="Language">
+      <option>English</option><option>தமிழ்</option><option>Thanglish</option>
+    </select>
+  </header>
+
+  <p class="tag">Find care. Understand medicines. Reach help.</p>
+  <input class="search" id="q" placeholder="Search a hospital, doctor or medicine">
+
+  <div class="grid">
+    <div class="card" tabindex="0" data-t="Nearby hospitals, clinics and pharmacies will appear here."><span>🏥</span><div><b>Find care</b><small>Hospitals, clinics, pharmacies</small></div></div>
+    <div class="card" tabindex="0" data-t="Enter a medicine name to see its uses and warnings."><span>💊</span><div><b>Understand medicines</b><small>Uses, dosage, side effects</small></div></div>
+    <div class="card" tabindex="0" data-t="Appointments and reminders will appear here."><span>📅</span><div><b>Appointments</b><small>Book and get reminders</small></div></div>
+  </div>
+
+  <button class="sos" onclick="location.href='tel:108'">🚑 Emergency: call 108</button>
+  <div id="out" aria-live="polite">Pick an option to begin.</div>
+
+<script>
+  const out = document.getElementById('out');
+  document.querySelectorAll('.card').forEach(c => {
+    const show = () => out.textContent = c.dataset.t;
+    c.addEventListener('click', show);
+    c.addEventListener('keydown', e => { if (e.key === 'Enter') show(); });
+  });
+  document.getElementById('q').addEventListener('input', e => {
+    out.textContent = e.target.value ? 'Searching for "' + e.target.value + '"…' : 'Pick an option to begin.';
+  });
+</script>
+</body>
+</html>
